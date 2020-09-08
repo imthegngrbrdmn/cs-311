@@ -5,11 +5,6 @@ ProductOrder::ProductOrder()
 {
 }
 
-ProductOrder::~ProductOrder()
-{
-	delete(this);
-}
-
 ProductOrder::ProductOrder(std::string name, int inventory)
 	: _name(name), _numItems(inventory)
 {

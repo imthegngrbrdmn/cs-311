@@ -2,15 +2,14 @@
 #define PRODUCTORDER_H
 
 #include <string>
-#include <cstdint>
 #include <ostream>
 
 class ProductOrder
 {
 public:
 	ProductOrder();
-	~ProductOrder();
-	ProductOrder(const ProductOrder& other);
+	~ProductOrder()=default;
+	ProductOrder(const ProductOrder& other)=default;
 	ProductOrder(ProductOrder&& other)=default;
 	ProductOrder& operator=(const ProductOrder& other)=default;
 	ProductOrder& operator=(ProductOrder&& other)=default;
@@ -36,7 +35,7 @@ public:
 	ProductOrder& operator--([[maybe_unused]] int dummy);
 private:
 	std::string _name;
-	std::uint_fast32_t _numItems;
+	int _numItems;
 };
 
 std::ostream & operator<<(std::ostream & out, const ProductOrder & p);
