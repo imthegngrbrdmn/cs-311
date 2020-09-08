@@ -1,10 +1,5 @@
 #include "productorder.h"
 
-ProductOrder::ProductOrder()
-	:_name("UNSPECIFIED"), _numItems(0)
-{
-}
-
 ProductOrder::ProductOrder(std::string name, int inventory)
 	: _name(name), _numItems(inventory)
 {
@@ -56,7 +51,7 @@ ProductOrder& ProductOrder::operator++()
 	return *this;
 }
 
-ProductOrder& ProductOrder::operator++(int dummy)
+ProductOrder ProductOrder::operator++(int dummy)
 {
 	auto save = *this;
 	++(*this);
@@ -66,10 +61,11 @@ ProductOrder& ProductOrder::operator++(int dummy)
 ProductOrder& ProductOrder::operator--()
 {
 	--_numItems;
+	if (_numItems < 0) _numItems = 0;
 	return *this;
 }
 
-ProductOrder& ProductOrder::operator--(int dummy)
+ProductOrder ProductOrder::operator--(int dummy)
 {
 	auto save = *this;
 	--(*this);

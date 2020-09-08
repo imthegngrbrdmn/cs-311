@@ -15,7 +15,9 @@
 class ProductOrder
 {
 public:
-	ProductOrder();
+	ProductOrder()
+		:_name("UNSPECIFIED"),_numItems(0)
+	{}
 	~ProductOrder()=default;
 	ProductOrder(const ProductOrder& other)=default;
 	ProductOrder(ProductOrder&& other)=default;
@@ -37,10 +39,10 @@ public:
 	bool operator!=(const ProductOrder& other) const;
 
 	ProductOrder& operator++();
-	ProductOrder& operator++([[maybe_unused]] int dummy);
+	ProductOrder operator++([[maybe_unused]] int dummy);
 
 	ProductOrder& operator--();
-	ProductOrder& operator--([[maybe_unused]] int dummy);
+	ProductOrder operator--([[maybe_unused]] int dummy);
 private:
 	std::string _name;
 	int _numItems;
