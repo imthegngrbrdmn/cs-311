@@ -2,7 +2,7 @@
 productorder.h
 Millard A. Arnold V
 Started: 2020-09-03
-Updated: 2020-09-07
+Updated: 2020-09-08
 
 For CS 311 - Project 1
 Header file for ProductOrder class
@@ -143,7 +143,7 @@ private:
 };	//End class ProductOrder
 
 /*
-	operator<< (ostream, ProductOrder)
+	op<< (ostream, ProductOrder)
 	Prints given ProductOrder object as converted by toString
 */
 std::ostream & operator<<(std::ostream & out, const ProductOrder & p);
