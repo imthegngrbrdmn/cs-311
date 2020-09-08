@@ -142,6 +142,10 @@ private:
 
 };	//End class ProductOrder
 
+/*
+	operator<< (ostream, ProductOrder)
+	Prints given ProductOrder object as converted by toString
+*/
 std::ostream & operator<<(std::ostream & out, const ProductOrder & p);
 
 #endif
