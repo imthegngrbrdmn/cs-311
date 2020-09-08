@@ -1,7 +1,7 @@
 #include "productorder.h"
 
 ProductOrder::ProductOrder(std::string name, int inventory)
-	: _name(name), _numItems(inventory)
+	: _name(name), _quantity(inventory)
 {
 }
 
@@ -12,7 +12,7 @@ std::string ProductOrder::getName() const
 
 int ProductOrder::getNumber() const
 {
-	return _numItems;
+	return _quantity;
 }
 
 void ProductOrder::setName(std::string name)
@@ -22,32 +22,32 @@ void ProductOrder::setName(std::string name)
 
 void ProductOrder::setNumber(int inventory)
 {
-	_numItems = inventory;
+	_quantity = inventory;
 }
 
 bool ProductOrder::empty() const
 {
-	return _numItems==0;
+	return _quantity==0;
 }
 
 std::string ProductOrder::toString() const
 {
-	return _name + " (" + std::to_string(_numItems) + ")";
+	return _name + " (" + std::to_string(_quantity) + ")";
 }
 
 bool ProductOrder::operator==(const ProductOrder& other) const
 {
-	return _name==other.getName() && _numItems==other.getNumber();
+	return _name==other.getName() && _quantity==other.getNumber();
 }
 
 bool ProductOrder::operator!=(const ProductOrder& other) const
 {
-	return !(_name == other.getName() && _numItems == other.getNumber());
+	return !(_name == other.getName() && _quantity == other.getNumber());
 }
 
 ProductOrder& ProductOrder::operator++()
 {
-	++_numItems;
+	++_quantity;
 	return *this;
 }
 
@@ -60,8 +60,8 @@ ProductOrder ProductOrder::operator++(int dummy)
 
 ProductOrder& ProductOrder::operator--()
 {
-	--_numItems;
-	if (_numItems < 0) _numItems = 0;
+	--_quantity;
+	if (_quantity < 0) _quantity = 0;
 	return *this;
 }
 
