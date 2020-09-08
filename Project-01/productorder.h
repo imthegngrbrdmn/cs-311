@@ -1,3 +1,11 @@
+//productorder.h
+//Millard A. Arnold V
+//Started: 2020-09-03
+//Updated: 2020-09-07
+//
+//For CS 311 - Project 1
+//Header for ProductOrder class
+
 #ifndef PRODUCTORDER_H
 #define PRODUCTORDER_H
 
