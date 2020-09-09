@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="doctest.h" />
+    <ClInclude Include="msarray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="msarray_test.cpp" />
