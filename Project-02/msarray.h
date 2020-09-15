@@ -120,46 +120,7 @@ public:
 	const value_type& operator[](std::size_t index) const { return _arrayPtr[index]; }
 	const value_type* begin() const { return begin(); }
 	const value_type* end() const { return end(); }
-	const bool operator==(const MSArray& other) const 
-	{
-		return _size == other.size();
-	}
-	const bool operator!=(const MSArray& other) const 
-	{
-		return _size != other.size(); 
-	}
-	const bool operator<(const MSArray& other) const
-	{
-		for (std::size_t i = 0; i < _size && i < other.size(); ++i)
-		{
-			if (this[i] == other[i])
-			{
-				continue;
-			}
-			return this[i] < other[i];
-		}
-		return _size < other.size();
-	}
-	const bool operator>(const MSArray& other) const
-	{
-		for (std::size_t i = 0; i < _size && i < other.size(); ++i)
-		{
-			if (this[i] == other[i])
-			{
-				continue;
-			}
-			return this[i] > other[i];
-		}
-		return _size > other.size();
-	}
-	const bool operator<=(const MSArray& other) const
-	{
-		return *this == other || *this < other;
-	}
-	const bool operator>=(const MSArray& other) const
-	{
-		return *this == other || *this > other;
-	}
+	
 private:
 	void swap(MSArray& other) noexcept
 	{
@@ -167,7 +128,52 @@ private:
 		std::swap(_size, other._arrayPtr);
 	}
 	value_type* _arrayPtr;
-	std::size_t _size;
+	size_type _size;
 };
-
+template<typename T>
+bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	return lhs.size() == rhs.size();
+}
+template<typename T>
+bool operator!=(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	return lhs.size() != rhs.size();
+}
+template<typename T>
+bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	for (std::size_t i = 0; i < lhs.size() && i < other.size(); ++i)
+	{
+		if (lhs[i] == rhs[i])
+		{
+			continue;
+		}
+		return lhs[i] < rhs[i];
+	}
+	return lhs.size() < rhs.size();
+}
+template<typename T>
+bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	for (std::size_t i = 0; i < lhs.size() && i < other.size(); ++i)
+	{
+		if (lhs[i] == rhs[i])
+		{
+			continue;
+		}
+		return lhs[i] > rhs[i];
+	}
+	return lhs.size() > rhs.size();
+}
+template<typename T>
+bool operator<=(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	return lhs == rhs || lhs < rhs;
+}
+template<typename T>
+bool operator>=(const MSArray<T>& lhs, const MSArray<T>& rhs)
+{
+	return lhs == rhs || lhs > rhs;
+}
 #endif
