@@ -21,6 +21,7 @@ class MSArray
 public:
 	using value_type = T;
 	using size_type = std::size_t;
+
 public:
 	/*
 		Default ctor
@@ -60,6 +61,8 @@ public:
 		}
 	}
 
+//	Big Five
+public:
 	//	Destructor
 	~MSArray()
 	{
@@ -69,21 +72,14 @@ public:
 	MSArray(const MSArray& other)
 		: _size(other.size()), _arrayPtr(new value_type[other.size()])
 	{
-		for (std::size_t i = 0; i < _size; ++i)
-		{
-			_arrayPtr[i] = other[i];
-		}
+		std::copy(other.begin(), other.end(), _arrayPtr);
 	}
 	//	Move Constructor
 	MSArray(MSArray&& other) noexcept
-		: _size(other.size()), _arrayPtr(new value_type[other.size()])
+		: _size(other._size), _arrayPtr(other._arrayPtr)
 	{
-		for (std::size_t i = 0; i < _size; ++i)
-		{
-			_arrayPtr[i] = other[i];
-		}
-		other._arrayPtr = new value_type[_size];
-		other._size = _size;
+		other._arrayPtr = new value_type[0];
+		other._size = 0;
 	}
 	//	Copy Assignment Operator
 	MSArray& operator=(const MSArray& other)
@@ -151,7 +147,7 @@ bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
 	}
 	for (std::size_t i = 0; i < lhs.size(); ++i)
 	{
-		if (rhs[i]==lhs[i])
+		if (rhs[i] != lhs[i])
 		{
 			return false;
 		}
@@ -168,11 +164,8 @@ bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
 	{
-		if (!(lhs[i] < rhs[i]))
-		{
-			continue;
-		}
-		return lhs[i] < rhs[i];
+		if (rhs[i] < lhs[i])	return false;
+		if (lhs[i] < rhs[i])	return true;
 	}
 	return lhs.size() < rhs.size();
 }
@@ -181,22 +174,19 @@ bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
 	{
-		if (lhs[i] < rhs[i])
-		{
-			continue;
-		}
-		return !(lhs[i] < rhs[i]);
+		if (rhs[i] < lhs[i])	return true;
+		if (lhs[i] < rhs[i])	return false;
 	}
 	return lhs.size() > rhs.size();
 }
 template<typename T>
 bool operator<=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs < rhs || lhs == rhs;
+	return !(lhs > rhs);
 }
 template<typename T>
 bool operator>=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs > rhs || lhs == rhs;
+	return !(lhs < rhs);
 }
 #endif
