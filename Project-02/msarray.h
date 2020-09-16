@@ -238,6 +238,14 @@ private:
 	size_type _size;
 };
 
+
+/*
+	global operator== for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator == defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
@@ -247,18 +255,34 @@ bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
 	}
 	for (std::size_t i = 0; i < lhs.size(); ++i)
 	{
-		if (rhs[i] != lhs[i])
+		if (!(rhs[i] == lhs[i]))
 		{
 			return false;
 		}
 	}
 	return true;
 }
+
+/*
+	global operator!= for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator == defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator!=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	return !(lhs==rhs);
 }
+
+/*
+	global operator< for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator < defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
@@ -269,6 +293,14 @@ bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 	}
 	return lhs.size() < rhs.size();
 }
+
+/*
+	global operator> for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator < defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
@@ -279,11 +311,27 @@ bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 	}
 	return lhs.size() > rhs.size();
 }
+
+/*
+	global operator<= for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator < defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator<=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	return !(lhs > rhs);
 }
+
+/*
+	global operator>= for two MSArrays
+	pre:
+		T must be a value type
+		T must have operator < defined
+		MSArrays must have the same value type
+*/
 template<typename T>
 bool operator>=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
