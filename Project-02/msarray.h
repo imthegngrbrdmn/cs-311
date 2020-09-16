@@ -341,4 +341,5 @@ bool operator>=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	return !(lhs < rhs);
 }
+
 #endif
