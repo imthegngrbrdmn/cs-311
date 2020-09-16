@@ -590,7 +590,7 @@ TEST_CASE( "Comparisons allow min-functionality value types (passes if it compil
 
     SUBCASE( "op< allows value types defining only op<" )
     {
-        const MSArray<Counter> cmc1(2);
+		const MSArray<Counter> cmc1(2);
         const MSArray<Counter> cmc2(2);
 
         [[maybe_unused]] bool result = (cmc1 < cmc2);

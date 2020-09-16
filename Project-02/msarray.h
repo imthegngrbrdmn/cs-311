@@ -28,7 +28,7 @@ public:
 		All items should be default constucted
 	*/
 	MSArray()
-		: _arrayPtr(new value_type(8))
+		: _size(8), _arrayPtr(new value_type[8])
 	{
 
 	}
@@ -40,7 +40,7 @@ public:
 		All items should be default constructed
 	*/
 	explicit MSArray(int size)
-		: _size(size), _arrayPtr(new value_type(size))
+		: _size(size), _arrayPtr(new value_type[size])
 	{
 
 	}
@@ -52,39 +52,50 @@ public:
 		All items should be set to value of second parameter
 	*/
 	MSArray(int size, value_type value)
-		: _size(size), _arrayPtr(new value_type(size))
+		: _size(size), _arrayPtr(new value_type[size])
 	{
-
+		for (std::size_t i = 0; i < _size; ++i)
+		{
+			_arrayPtr[i] = value;
+		}
 	}
 
 	//	Destructor
 	~MSArray()
 	{
-		delete(_arrayPtr);
+		delete [] _arrayPtr;
 	}
 	//	Copy Constructor
 	MSArray(const MSArray& other)
-		: _size(other.size()), _arrayPtr(new value_type(other.size()))
+		: _size(other.size()), _arrayPtr(new value_type[other.size()])
 	{
-		std::copy(other.begin(), other.end(), _arrayPtr);
+		for (std::size_t i = 0; i < _size; ++i)
+		{
+			_arrayPtr[i] = other[i];
+		}
 	}
 	//	Move Constructor
 	MSArray(MSArray&& other) noexcept
-		: _size(other.size()), _arrayPtr(new value_type(other.size()))
+		: _size(other.size()), _arrayPtr(new value_type[other.size()])
 	{
-		std::move(other.begin(), other.end(), _arrayPtr);
+		for (std::size_t i = 0; i < _size; ++i)
+		{
+			_arrayPtr[i] = other[i];
+		}
+		other._arrayPtr = new value_type[_size];
+		other._size = _size;
 	}
 	//	Copy Assignment Operator
 	MSArray& operator=(const MSArray& other)
 	{
 		MSArray copy_of_other(other);
-		swap(other);
+		mswap(copy_of_other);
 		return *this;
 	}
 	//	Move Assignment Operator
 	MSArray& operator=(MSArray&& other) noexcept
 	{
-		swap(other);
+		mswap(other);
 		return *this;
 	}
 
@@ -95,7 +106,7 @@ public:
 		Pre:
 			0 < index < _size - 1
 	*/
-	value_type* operator[](std::size_t index) 
+	value_type& operator[](std::size_t index) 
 	{ 
 		return _arrayPtr[index]; 
 	}
@@ -118,34 +129,46 @@ public:
 
 	const std::size_t size() const { return _size; }
 	const value_type& operator[](std::size_t index) const { return _arrayPtr[index]; }
-	const value_type* begin() const { return begin(); }
-	const value_type* end() const { return end(); }
+	const value_type* begin() const { return _arrayPtr; }
+	const value_type* end() const { return (_arrayPtr + _size); }
 	
 private:
-	void swap(MSArray& other) noexcept
+	void mswap(MSArray& other) noexcept
 	{
 		std::swap(_arrayPtr, other._arrayPtr);
-		std::swap(_size, other._arrayPtr);
+		std::swap(_size, other._size);
 	}
 	value_type* _arrayPtr;
 	size_type _size;
 };
+
 template<typename T>
 bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs.size() == rhs.size();
+	if (lhs.size() != rhs.size())
+	{
+		return false;
+	}
+	for (std::size_t i = 0; i < lhs.size(); ++i)
+	{
+		if (rhs[i]==lhs[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
 template<typename T>
 bool operator!=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs.size() != rhs.size();
+	return !(lhs==rhs);
 }
 template<typename T>
 bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	for (std::size_t i = 0; i < lhs.size() && i < other.size(); ++i)
+	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
 	{
-		if (lhs[i] == rhs[i])
+		if (!(lhs[i] < rhs[i]))
 		{
 			continue;
 		}
@@ -156,24 +179,24 @@ bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 template<typename T>
 bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	for (std::size_t i = 0; i < lhs.size() && i < other.size(); ++i)
+	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
 	{
-		if (lhs[i] == rhs[i])
+		if (lhs[i] < rhs[i])
 		{
 			continue;
 		}
-		return lhs[i] > rhs[i];
+		return !(lhs[i] < rhs[i]);
 	}
 	return lhs.size() > rhs.size();
 }
 template<typename T>
 bool operator<=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs == rhs || lhs < rhs;
+	return lhs < rhs || lhs == rhs;
 }
 template<typename T>
 bool operator>=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return lhs == rhs || lhs > rhs;
+	return lhs > rhs || lhs == rhs;
 }
 #endif
