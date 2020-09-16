@@ -132,7 +132,7 @@ public:
 		return *this;
 	}
 	/*
-		Copy Assignment Operator
+		Move Assignment Operator
 		swaps values with other MSArray
 		returns reference to new MSArray
 	*/
