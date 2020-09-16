@@ -11,18 +11,39 @@ Header file for moderately smart array
 #ifndef MSARRAY_H
 #define MSARRAY_H
 
-#include <algorithm>
-#include <stdexcept>
-#include <cstddef>
+#include <algorithm>	// For std::copy and std::swap.
+#include <cstddef>		// For std::size_t 
 
+/*
+	Template parameter types must have a default constructor.
+*/
 template<typename T> 
+/*
+	Class MSArray
+	Creates a moderately smart array that will be 
+	passed a value type to be held in the array.
+	
+	Invariants: 
+		_size >= 0
+		_arrayPtr assigned
+		value_type has a default constructor.
+*/
 class MSArray
 {
+
+//	Member Types
 public:
+	
+	//	The type of each item in the array
 	using value_type = T;
+	
+	//	The type of size for the array & the type for index values.
 	using size_type = std::size_t;
 
+
+//	Ctors
 public:
+	
 	/*
 		Default ctor
 		Create MSArray of size 8
@@ -30,9 +51,7 @@ public:
 	*/
 	MSArray()
 		: _size(8), _arrayPtr(new value_type[8])
-	{
-
-	}
+	{}
 	
 	/*
 		1 Parameter ctor
@@ -40,11 +59,9 @@ public:
 			non-negative integer giving number of items in array
 		All items should be default constructed
 	*/
-	explicit MSArray(int size)
+	explicit MSArray(size_type size)
 		: _size(size), _arrayPtr(new value_type[size])
-	{
-
-	}
+	{}
 
 	/*
 		2 Parameter ctor
@@ -52,7 +69,7 @@ public:
 			non-negative integer giving number of items in array
 		All items should be set to value of second parameter
 	*/
-	MSArray(int size, value_type value)
+	MSArray(size_type size, value_type value)
 		: _size(size), _arrayPtr(new value_type[size])
 	{
 		for (std::size_t i = 0; i < _size; ++i)
@@ -61,44 +78,77 @@ public:
 		}
 	}
 
-//	Big Five
+
+//	MSArray: Big Five
 public:
-	//	Destructor
+	
+	/*
+		Destructor
+		frees _arrayPtr
+		Pre:
+			_arrayPtr points to some memory
+	*/
 	~MSArray()
 	{
 		delete [] _arrayPtr;
 	}
-	//	Copy Constructor
+	
+	/*
+		Copy Constructor
+		copies other MSArray
+		post: 
+			other MSArray does not change
+	*/
 	MSArray(const MSArray& other)
 		: _size(other.size()), _arrayPtr(new value_type[other.size()])
 	{
 		std::copy(other.begin(), other.end(), _arrayPtr);
 	}
-	//	Move Constructor
+	
+	/*
+		Move Constructor
+		moves other MSArray data memebers
+		Post:
+			other._arrayPtr valid
+	*/
 	MSArray(MSArray&& other) noexcept
 		: _size(other._size), _arrayPtr(other._arrayPtr)
 	{
 		other._arrayPtr = new value_type[0];
 		other._size = 0;
 	}
-	//	Copy Assignment Operator
+	
+	/*
+		Copy Assignment Operator
+		copies other MSArray
+		returns reference to new MSArray
+		post:
+			other MSArray does not change
+	*/
 	MSArray& operator=(const MSArray& other)
 	{
 		MSArray copy_of_other(other);
 		mswap(copy_of_other);
 		return *this;
 	}
-	//	Move Assignment Operator
+	/*
+		Copy Assignment Operator
+		swaps values with other MSArray
+		returns reference to new MSArray
+	*/
 	MSArray& operator=(MSArray&& other) noexcept
 	{
 		mswap(other);
 		return *this;
 	}
 
+
+//	MSArray: Non-const Member Functions
 public:
+	
 	/*
 		Bracket Operator
-		Return value at index
+		Return reference to value at index
 		Pre:
 			0 < index < _size - 1
 	*/
@@ -106,35 +156,85 @@ public:
 	{ 
 		return _arrayPtr[index]; 
 	}
+
 	/*
-		Member Function Begin
-		Return Address of First Item In Array
+		Member Function begin
+		Return pointer to first item in array
 	*/
 	value_type* begin() 
 	{ 
 		return _arrayPtr; 
 	}
+
 	/*
-		Member Function End
-		Return Address of Item One Past Last Item In Array
+		Member Function end
+		Return pointer to one past last item in array
 	*/
 	value_type* end() 
 	{ 
 		return (_arrayPtr + _size); 
 	}
 
-	const std::size_t size() const { return _size; }
-	const value_type& operator[](std::size_t index) const { return _arrayPtr[index]; }
-	const value_type* begin() const { return _arrayPtr; }
-	const value_type* end() const { return (_arrayPtr + _size); }
+
+//	MSArray: Const Member Functions
+public:
 	
+	/*
+		Member Function size
+		return number of items in array
+	*/
+	const size_type size() const 
+	{
+		return _size; 
+	}
+	
+	/*
+		Member Function const bracket operator
+		Return const referencet to value at index
+		Pre:
+			0 < index < _size - 1
+	*/
+	const value_type& operator[](size_type index) const 
+	{ 
+		return _arrayPtr[index]; 
+	}
+	
+	/*
+		Member Function const begin
+		Return const pointer to first item in array
+	*/
+	const value_type* begin() const 
+	{ 
+		return _arrayPtr; 
+	}
+
+	/*
+		Member Function const end
+		Return const pointer to one past last item in array
+	*/
+	const value_type* end() const
+	{ 
+		return (_arrayPtr + _size); 
+	}
+
+
+//	MSArray: Private Functions & Data Members
 private:
+	
+	/*
+		Private Member Function mswap
+		swaps values of this with another MSArray
+	*/
 	void mswap(MSArray& other) noexcept
 	{
 		std::swap(_arrayPtr, other._arrayPtr);
 		std::swap(_size, other._size);
 	}
+
+	//	Pointer to array
 	value_type* _arrayPtr;
+	
+	//	Size of array
 	size_type _size;
 };
 
