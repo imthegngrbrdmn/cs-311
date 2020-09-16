@@ -326,7 +326,7 @@ bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 template<typename T>
 bool operator<=(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	return !(lhs > rhs);
+	return !(rhs < lhs);
 }
 
 /*
