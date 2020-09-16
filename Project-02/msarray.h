@@ -253,6 +253,7 @@ bool operator==(const MSArray<T>& lhs, const MSArray<T>& rhs)
 	{
 		return false;
 	}
+
 	for (std::size_t i = 0; i < lhs.size(); ++i)
 	{
 		if (!(rhs[i] == lhs[i]))
@@ -288,9 +289,17 @@ bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
 	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
 	{
-		if (rhs[i] < lhs[i])	return false;
-		if (lhs[i] < rhs[i])	return true;
+		if (rhs[i] < lhs[i])
+		{
+			return false;
+		}
+
+		if (lhs[i] < rhs[i])
+		{
+			return true;
+		}
 	}
+
 	return lhs.size() < rhs.size();
 }
 
@@ -304,12 +313,7 @@ bool operator<(const MSArray<T>& lhs, const MSArray<T>& rhs)
 template<typename T>
 bool operator>(const MSArray<T>& lhs, const MSArray<T>& rhs)
 {
-	for (std::size_t i = 0; i < lhs.size() && i < rhs.size(); ++i)
-	{
-		if (rhs[i] < lhs[i])	return true;
-		if (lhs[i] < rhs[i])	return false;
-	}
-	return lhs.size() > rhs.size();
+	return rhs < lhs;
 }
 
 /*
