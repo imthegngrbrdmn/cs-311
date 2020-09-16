@@ -131,6 +131,7 @@ public:
 		mswap(copy_of_other);
 		return *this;
 	}
+
 	/*
 		Move Assignment Operator
 		swaps values with other MSArray
