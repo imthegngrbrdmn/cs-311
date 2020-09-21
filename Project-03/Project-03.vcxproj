@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="doctest.h" />
     <ClInclude Include="dp3.h" />
+    <ClInclude Include="llnode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dp3.cpp" />
