@@ -1,9 +1,16 @@
-// dp3.h  SKELETON
-// Glenn G. Chappell
-// 2020-09-17
-//
-// For CS 311 Fall 2020
-// Header for Project 3 functions
+/*
+File:		dp3.h
+Author:		Millard A. Arnold V
+Started:	2020-09-21
+Updated:	2020-09-21
+Project:	CS-311 Project 3
+
+Header file for Project 3 Functions
+
+Using skeleton file 
+provided by Glenn G. Chappell 
+written on 2020-09-17
+*/
 
 #ifndef FILE_DP3_H_INCLUDED
 #define FILE_DP3_H_INCLUDED
@@ -14,15 +21,21 @@
 
 
 template <typename ValueType>
-ValueType lookup(const LLNode<ValueType> * head,
-                 std::size_t index)
+ValueType lookup(const LLNode<ValueType> * head, std::size_t index)
 {
-    return ValueType();  // Dummy return
-    // TODO: Write this!!!
+	auto p = head;
+	for (std::size_t i = 0; i < index && p!=nullptr; ++i)
+	{
+		p = p->_next;
+	}
+	if (p != nullptr)
+	{
+		return p->_data;
+	}
+	throw std::out_of_range("index out of range");
 }
 
 
-// Implementation in source file
 void didItThrow(const std::function<void()> & ff,
                 bool & threw);
 
@@ -31,8 +44,21 @@ template <typename FDIter>
 bool checkSorted(FDIter first,
                  FDIter last)
 {
-    return false;  // Dummy return
-    // TODO: Write this!!!
+	if (first == last)
+	{
+		return true;
+	}
+	auto curr = *first;
+	while (++first != last)
+	{
+		if (curr <= *first)
+		{
+			curr = *first;
+			continue;
+		}
+		return false;
+	}
+    return true; 
 }
 
 
