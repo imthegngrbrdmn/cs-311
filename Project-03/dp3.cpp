@@ -12,11 +12,11 @@ provided by Glenn G. Chappell
 written on 2020-09-17
 */
 
-#include "dp3.h"       // For Project 3 prototypes & templates
+#include "dp3.h"	// For Project 3 prototypes & templates
 
 using std::function;
 
-
+//	documentation in header file
 void didItThrow(const function<void()> & ff,
                 bool & threw)
 {
@@ -32,7 +32,7 @@ void didItThrow(const function<void()> & ff,
 	threw = false;
 }
 
-
+//	documentation in header file
 int gcd(int a,
         int b)
 {
