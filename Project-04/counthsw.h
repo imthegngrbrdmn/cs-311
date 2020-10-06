@@ -69,6 +69,11 @@ public:
 		countHSW_recurse(start_x,start_y,covered);
 		
 	}
+
+	/*
+		Dctor
+		Does nothing
+	*/
 	~HoleySpiderWalk() { }
 
 //	Big 5 Delete All
