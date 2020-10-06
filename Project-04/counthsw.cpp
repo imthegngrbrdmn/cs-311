@@ -13,7 +13,7 @@
 //	Documentation in header file
 int countHSW(int dim_x, int dim_y, int hole_x, int hole_y, int start_x, int start_y, int finish_x, int finish_y)
 {
-	return HoleySpiderWalk(dim_x,dim_y,hole_x,hole_y,start_x,start_y,finish_x,finish_y).getResult();
+	return HoleySpiderWalk(dim_x, dim_y, hole_x, hole_y, start_x, start_y, finish_x, finish_y).getResult();
 }
 
 //	Documentation in header file
