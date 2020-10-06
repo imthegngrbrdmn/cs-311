@@ -43,48 +43,48 @@ void HoleySpiderWalk::countHSW_recurse(const int& curr_x, const int& curr_y, std
 	if (curr_x - 1 >= 0 && curr_y + 1 < _dim_y &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x - 1, curr_y + 1)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x - 1, curr_y + 1, covered);	// SOUTHWEST
+		countHSW_recurse(curr_x - 1, curr_y + 1, covered);
 	}
 
 	//	West
 	if (curr_x - 1 >= 0 &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x - 1, curr_y)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x - 1, curr_y, covered);	// WEST
+		countHSW_recurse(curr_x - 1, curr_y, covered);
 	}
 
 	//	Northwest
 	if (curr_x - 1 >= 0 && curr_y - 1 >= 0 &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x - 1, curr_y - 1)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x - 1, curr_y - 1, covered);	// NORTHWEST
+		countHSW_recurse(curr_x - 1, curr_y - 1, covered);
 	}
 
 	//	North
 	if (curr_y - 1 >= 0 &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x, curr_y - 1)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x, curr_y - 1, covered);	// NORTH
+		countHSW_recurse(curr_x, curr_y - 1, covered);
 	}
 
 	//	Northeast
 	if (curr_x + 1 < _dim_x && curr_y - 1 >= 0 &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x + 1, curr_y - 1)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x + 1, curr_y - 1, covered);	// NORTHEAST
+		countHSW_recurse(curr_x + 1, curr_y - 1, covered);
 	}
 
 	//	East
 	if (curr_x + 1 < _dim_x &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x + 1, curr_y)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x + 1, curr_y, covered);	// EAST
+		countHSW_recurse(curr_x + 1, curr_y, covered);
 	}
 
 	//	Southeast
 	if (curr_x + 1 < _dim_x && curr_y + 1 < _dim_y &&
 		std::find(std::begin(covered), std::end(covered), std::make_pair(curr_x + 1, curr_y + 1)) == std::end(covered))
 	{
-		countHSW_recurse(curr_x + 1, curr_y + 1, covered);	// SOUTHEAST
+		countHSW_recurse(curr_x + 1, curr_y + 1, covered);
 	}
 }
