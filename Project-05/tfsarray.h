@@ -11,7 +11,7 @@
 #ifndef TFSARRAY_H
 #define TFSARRAY_H
 
-#include<cstdlib>
+#include<cstddef>
 #include<algorithm>
 
 template<typename T>
@@ -22,97 +22,167 @@ public:
 	using size_type = std::size_t;
 	using iterator = value_type*;
 	using const_iterator = const value_type*;
+private:
+	enum { DEFAULT_CAP = 16 };
 public:
-	TFSArray()
-		: _size(0), _arrayPtr(new value_type[0])
+	// Default Ctor
+	explicit TFSArray(size_type size = 0)
+		: _size(size), 
+		_capacity(std::max(_size, size_type(DEFAULT_CAP))), //must be declared before _data
+		_data(new value_type[_capacity])
 	{}
 
+	// Dctor
 	~TFSArray()
 	{
-		delete[] _arrayPtr;
+		delete[] _data;
 	}
+	// Copy ctor
 	TFSArray(const TFSArray& other)
-		: _size(other.size()), _arrayPtr(new value_type[other.size()])
+		: _capacity(other._capacity), 
+		_size(other._size), 
+		_data(new value_type[other._capacity])
 	{
-		std::copy(other.begin(), other.end(), _arrayPtr);
+		std::copy(other.begin(), other.end(), _data);
 	}
+	// move ctor
 	TFSArray(TFSArray&& other) noexcept
-		: _size(other._size), _arrayPtr(other._arrayPtr)
+		: _size(other._size), 
+		_capacity(other._capacity),
+		_data(other._data)
 	{
-		other._arrayPtr = nullptr;
+		other._data = nullptr;
 		other._size = 0;
+		other._capacity = 0;
 	}
-	TFSArray& operator=(const MSArray& other)
+	// copy assignment op
+	TFSArray& operator=(const TFSArray& other)
 	{
 		TFSArray copy_of_other(other);
 		mswap(copy_of_other);
 		return *this;
 	}
+	// move assignment op
+	TFSArray& operator=(TFSArray&& other) noexcept
+	{
+		mswap(other);
+		return *this;
+	}
 
 public:
+	// Access value at index
 	value_type& operator[](size_type index)
 	{
-		return _arrayPtr[index];
+		return _data[index];
 	}
-	size_type size()
+	const value_type& operator[](size_type index) const
+	{
+		return _data[index];
+	}
+
+	// Returns size of array
+	size_type size() noexcept
+	{
+		return _size;
+	}
+	const size_type size() const noexcept
 	{
 		return _size;
 	}
 
-	bool empty()
+	// True if size is zero
+	bool empty() noexcept
 	{
-		return 0 == _size;
+		return size() == 0;
+	}
+	const bool empty() const noexcept
+	{
+		return size() == 0;
 	}
 
+	// Resizes array to given size
 	void resize(size_type size)
 	{
-		//STUFF
+		if (size < _capacity)
+		{
+			_size = size;
+		}
+		else
+		{
+			TFSArray<value_type> temp(std::max(size, _capacity * 2));
+			temp._size = size;
+			std::copy(begin(), end(), temp._data);
+			mswap(temp);
+		}
 	}
 
-	iterator insert(iterator it, value_type val)
+	// Inserts value just before item referenced by given iterator
+	// returns iterator to inserted value
+	iterator insert(const iterator& it, const value_type& val)
 	{
-		//STUFF
+		size_type index = it - begin();
+		resize(size() + 1);
+		*(end()-1) = val;
+		std::rotate(it, end() - 1, end());
+		return begin() + index;
+	}
+
+	// Removes value referenced by iterator
+	// Returns iterator to item just after removed item
+	iterator erase(const iterator& it)
+	{
+		std::rotate(it - 1, it, end());
+		resize(size() - 1);
 		return it;
 	}
 
-	iterator erase(iterator it)
+	// Returns iterator to item 0 in array
+	iterator begin() noexcept
 	{
-		//STUFF
-		return it;
+		return _data;
+	}
+	const_iterator begin() const noexcept
+	{
+		return _data;
 	}
 
-	iterator begin()
+	// Returns iterator to item one past end of array
+	iterator end() noexcept
 	{
-		return _arrayPtr;
+		return (_data + _size);
+	}
+	const_iterator end() const noexcept
+	{
+		return (_data + _size);
 	}
 
-	iterator end()
+	// Adds item to end of the array
+	void push_back(const value_type& item)
 	{
-		return _arrayPtr + _size;
+		insert(end(),item);
 	}
 
-	void push_back()
-	{
-		//STUFF
-	}
-
+	// Removes last item from end of array
 	void pop_back()
 	{
-		//STUFF
+		erase(end());
 	}
 
-	void swap(TFSArray& other)
+	// Swaps the values of *this and given array
+	void swap(TFSArray& other) noexcept
 	{
-		//STUFF
+		mswap(other);
 	}
 private:
 	void mswap(TFSArray& other) noexcept
 	{
-		std::swap(_arrayPtr, other._arrayPtr);
+		std::swap(_data, other._data);
 		std::swap(_size, other._size);
+		std::swap(_capacity, other._capacity);
 	}
 private:
-	value_type* _arrayPtr;
-	size_type _size;
+	iterator _data;			// Pointer to first item in array
+	size_type _size;		// Size of the array
+	size_type _capacity;	// size of the allocated memory
 };
 #endif
