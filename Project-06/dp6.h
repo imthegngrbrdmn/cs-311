@@ -9,6 +9,7 @@
 	*/
 
 #ifndef DP6_H
+#define DP6_H
 
 #include <memory>
 #include "llnode2.h"
@@ -32,11 +33,14 @@ void reverseList(std::unique_ptr<LLNode2<ValType>>& head)
 }
 
 
-template<typename KeyType, typename dataType>
+template<typename keyType, typename dataType>
 class LLMap
 {
 public:
-	using KVType = std::pair<KeyType, dataType>;
+	using key_type = keyType;
+	using data_type = dataType;
+	using KVType = std::pair<key_type, data_type>;
+	using size_type = std::size_t;
 public:
 	/*
 		Default ctor
@@ -73,6 +77,89 @@ public:
 	LLMap(LLMap&& other) = delete;
 	LLMap& operator=(const LLMap& other) = delete;
 	LLMap& operator=(LLMap&& other) = delete;
+
+	/*
+		member function size
+		returns number fo key-value pairs in the dataset
+
+		Strong Gurantee
+		Exception Neutral
+	*/
+	size_type size()
+	{
+		return 0;
+	}
+
+	/*
+		member function empty
+		returns true if ther are no 
+		key-value pairs in the dataset
+		
+		Strong Gurarantee
+		Exception Neutral
+	*/
+	bool empty()
+	{
+		return size() == 0;
+	}
+
+	/*
+		member function find
+		if key lies in dataset, returned 
+		pointer points to associated value. 
+		otherwise returns nullptr
+		
+		Strong Gurarantee
+		Exception Neutral
+	*/
+	std::unique_ptr<LLNode2<KVType>> find(key_type key)
+	{
+		return nullptr;
+	}
+
+	/*
+		member function insert
+		if equal key does not lie in the data 
+		set, then the key-value pair is inserted. 
+		if equal key does lie in the data set, 
+		then existing key-value pair is replaced
+
+		Strong Guarantee
+		Exception Neutral
+	*/
+	void insert(key_type key, data_type data)
+	{
+
+	}
+
+	/*
+		member function erase
+		if equal key lies in the dataset
+		key-value pair is removed
+		otherwise does nothing
+		
+		Strong Guarantee
+		Exception Neutral
+	*/
+	void erase(key_type key)
+	{
+
+	}
+
+	/*
+		member function traverse
+		passed function is called on each 
+		key-value pair in the dataset
+
+		Strong Guarantee
+		Exception Neutral
+	*/
+	template<typename F_TRAVERSE> 
+	void traverse(F_TRAVERSE func)
+	{
+
+	}
+
 private:
 	std::unique_ptr<LLNode2<KVType>> _data;
 };
