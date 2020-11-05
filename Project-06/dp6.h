@@ -29,18 +29,47 @@
 template<typename ValType>
 void reverseList(std::unique_ptr<LLNode2<ValType>>& head)
 {
-	//STUFF
+	if (size(head) <= 1) return;
+	std::unique_ptr<LLNode2<ValType>> newHead;
+	while (head)
+	{
+		auto next = std::move(head->_next);
+		auto oldHead = std::move(newHead);
+		newHead = std::move(head);
+		newHead->_next = std::move(oldHead);
+		head = std::move(next);
+	}
+	head = std::move(newHead);
 }
 
-
+/*
+	class LLMap
+	Linked List holding an associative dataset
+	invariants: none
+*/
 template<typename keyType, typename dataType>
 class LLMap
 {
+
+/*
+	Public Data Member Types
+*/
 public:
+	// Type for key
 	using key_type = keyType;
+	
+	//Type for data
 	using data_type = dataType;
+	
+	//Key-Value type
 	using KVType = std::pair<key_type, data_type>;
+	
+	//Type for size
 	using size_type = std::size_t;
+
+/*
+	Default ctor and big 5
+*/
 public:
 	/*
 		Default ctor
@@ -62,7 +91,7 @@ public:
 	*/
 	~LLMap()
 	{
-
+		head.release();
 	}
 
 	/*
@@ -78,6 +107,10 @@ public:
 	LLMap& operator=(const LLMap& other) = delete;
 	LLMap& operator=(LLMap&& other) = delete;
 
+/*
+	public member functions
+*/
+public:
 	/*
 		member function size
 		returns number fo key-value pairs in the dataset
@@ -85,9 +118,16 @@ public:
 		Strong Gurantee
 		Exception Neutral
 	*/
-	size_type size()
+	size_type size() const noexcept
 	{
-		return 0;
+		auto p = head.get();
+		std::size_t counter = 0;
+		while (p != nullptr)
+		{
+			++counter;
+			p = p->_next.get();
+		}
+		return counter;
 	}
 
 	/*
@@ -98,7 +138,7 @@ public:
 		Strong Gurarantee
 		Exception Neutral
 	*/
-	bool empty()
+	bool empty() const noexcept
 	{
 		return size() == 0;
 	}
@@ -112,8 +152,41 @@ public:
 		Strong Gurarantee
 		Exception Neutral
 	*/
-	std::unique_ptr<LLNode2<KVType>> find(key_type key)
+	data_type* find(key_type key)
 	{
+		LLNode2<KVType>* p = head.get();
+		while (p != nullptr)
+		{
+			if (p->_data.first == key)
+			{
+				return &p->_data.second;
+			}
+			p = p->_next.get();
+		}
+		return nullptr;
+	}
+
+
+	/*
+		const member function find
+		if key lies in dataset, returned
+		pointer points to associated value.
+		otherwise returns nullptr
+
+		Strong Gurarantee
+		Exception Neutral
+	*/
+	const data_type* find(key_type key) const
+	{
+		LLNode2<KVType>* p = head.get();
+		while (p != nullptr)
+		{
+			if (p->_data.first == key)
+			{
+				return &p->_data.second;
+			}
+			p = p->_next.get();
+		}
 		return nullptr;
 	}
 
@@ -129,7 +202,7 @@ public:
 	*/
 	void insert(key_type key, data_type data)
 	{
-
+		push_front(head, std::make_pair(key, data));
 	}
 
 	/*
@@ -143,7 +216,18 @@ public:
 	*/
 	void erase(key_type key)
 	{
-
+		auto p = head.get();
+		auto last = p;
+		while (p != nullptr)
+		{
+			if (p->_data.first == key)
+			{
+				last->_next = std::move(p->_next);
+				return;
+			}
+			last = p;
+			p = p->_next.get();
+		}
 	}
 
 	/*
@@ -153,15 +237,27 @@ public:
 
 		Strong Guarantee
 		Exception Neutral
-	*/
-	template<typename F_TRAVERSE> 
-	void traverse(F_TRAVERSE func)
-	{
 
+		F must be a function or function like object 
+		that takes parameters (key_type, data_type)
+	*/
+	template<typename F> 
+	void traverse(F func)
+	{
+		auto p = head.get();
+		while (p != nullptr)
+		{
+			func(p->_data.first, p->_data.second);
+			p = p->_next.get();
+		}
 	}
 
+/*
+	private data member
+*/
 private:
-	std::unique_ptr<LLNode2<KVType>> _data;
+	//head of the list managed by this class
+	std::unique_ptr<LLNode2<KVType>> head;
 };
 
 #endif
