@@ -2,7 +2,7 @@
 	File:		treesort.h
 	Author:		Millard A. Arnold V
 	Started:	2020-11-15
-	Updated:	2020-11-15
+	Updated:	2020-11-17
 	Project:	CS-311 Project 7
 
 	Header file for treesort
