@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 	}
 	for (std::pair<std::string, int> wordpair : words)
 	{
-		std::cout << wordpair.first << ":\t" << wordpair.second << std::endl;
+		std::cout << wordpair.first << ": " << wordpair.second << std::endl;
 	}
 }
 
