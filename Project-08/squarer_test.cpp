@@ -41,9 +41,38 @@ const std::string test_suite_name =
 // *********************************************************************
 
 
-TEST_CASE("DUMMY")
+TEST_CASE("squarer: int")
 {
-    // DUMMY TEST CASE; REWRITE THIS AND ADD MORE!!!
+    Squarer s;
+    SUBCASE("one, zero, negative one")
+    {
+        int one = 1;
+        int zero = 0;
+        int negone = -1;
+        INFO("one");
+        REQUIRE(s(one) == one);
+        INFO("zero");
+        REQUIRE(s(zero) == zero);
+        INFO("negative one");
+        REQUIRE(s(negone) == one);
+    }
+    SUBCASE("small positive numbers")
+    {
+        INFO("2 to 20");
+        for (int i = 2; i <= 20; ++i)
+        {
+            REQUIRE(s(i) == i * i);
+        }
+    }
+    SUBCASE("large positive numbers")
+    {
+        INFO("1000");
+        REQUIRE(s((int)1000) == 1000 * 1000);
+        INFO("20000");
+        REQUIRE(s((int)20000) == 20000 * 20000);
+        INFO("46340");
+        REQUIRE(s((int)46340) == 46340 * 46340);
+    }
 }
 
 
