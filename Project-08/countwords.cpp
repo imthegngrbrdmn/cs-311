@@ -6,6 +6,7 @@
 	Project:	CS-311 Project 8
 	
 	Source file for excercise A
+	Reads a file & gives the wordcounts of each word.
 */
 
 #ifndef COUNTWORDS_CPP
@@ -16,6 +17,12 @@
 #include <string>	// for getline & string
 #include <map>		// for map
 
+/*
+	main function
+
+	Exception Neutral
+	No Throw Guarantee
+*/
 int main(int argc, char** argv)
 {
 	std::string filename;
@@ -26,8 +33,10 @@ int main(int argc, char** argv)
 	std::map<std::string, int> words;
 	while (infile>>word)
 	{
+		// Make sure read worked
 		if (infile)
 		{
+			// Add word to map
 			if (words.count(word) != 0)
 			{
 				++words[word];
@@ -37,11 +46,13 @@ int main(int argc, char** argv)
 				words[word] = 1;
 			}
 		}
+		// Check if end of file
 		else if (infile.eof())
 		{
 			break;
 		}
 	}
+	// Print all words & quantities
 	for (std::pair<std::string, int> wordpair : words)
 	{
 		std::cout << wordpair.first << ": " << wordpair.second << std::endl;
