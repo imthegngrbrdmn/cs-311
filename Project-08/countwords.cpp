@@ -11,10 +11,10 @@
 #ifndef COUNTWORDS_CPP
 #define COUNTWORDS_CPP
 
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <map>
+#include <fstream>	// for ifstream
+#include <iostream>	// for cout
+#include <string>	// for getline & string
+#include <map>		// for map
 
 int main(int argc, char** argv)
 {
